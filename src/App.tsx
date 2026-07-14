@@ -1,21 +1,30 @@
-import React from 'react';
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';
+import { Layout } from './components/Layout';
 import './App.scss';
+import { HomePage } from './modules/HomePage';
+import { CatalogPage } from './modules/CatalogPage/CatalogPage';
+import { FavoritesPage } from './modules/FavoritesPage';
+import { CartPage } from './modules/CartPage';
+import { ProductDetailsPage } from './modules/ProductDetailsPage';
 
-interface Props {
-  onClick: () => void;
-  children: React.ReactNode;
-}
-
-export const Provider: React.FC<Props> = React.memo(({ onClick, children }) => (
-  <button type="button" onClick={onClick}>
-    {children}
-  </button>
-));
-
-export const App: React.FC = () => {
+export const App = () => {
   return (
-    <div className="starter">
-      <Provider onClick={() => ({})}>TodoList</Provider>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<HomePage />} />
+          <Route path="phones" element={<CatalogPage />} />
+          <Route path="tablets" element={<CatalogPage />} />
+          <Route path="accessories" element={<CatalogPage />} />
+          <Route path=":category/:productId" element={<ProductDetailsPage />} />
+
+          <Route path="cart" element={<CartPage />} />
+
+          <Route path="favorites" element={<FavoritesPage />} />
+
+          <Route path="*" element={<h1>Page not found</h1>} />
+        </Route>
+      </Routes>
+    </Router>
   );
 };
